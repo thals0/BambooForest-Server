@@ -2,9 +2,7 @@ package com.sparta.bambooforest.entity;
 
 import lombok.Getter;
 
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
+import javax.persistence.*;
 
 @Getter
 public class Post extends TimeStamped{
