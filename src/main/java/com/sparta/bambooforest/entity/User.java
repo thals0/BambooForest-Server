@@ -11,7 +11,6 @@ import javax.persistence.GenerationType;
 @NoArgsConstructor
 @Entity(name = "users")
 public class User extends TimeStamped{
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -24,9 +23,4 @@ public class User extends TimeStamped{
 
     @Column(nullable = false)
     private String email;
-
-
-
-
-
 }
