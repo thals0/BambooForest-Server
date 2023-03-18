@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 public class PostRequestDto {
     private String title;
     private String content;
+    private String type;
 
     public PostRequestDto() {}
 
