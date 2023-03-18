@@ -6,26 +6,31 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 
 @Getter
-@NoArgsConstructor
 @Entity(name = "users")
+@NoArgsConstructor
 public class User extends TimeStamped{
 
-    // 소민님 내용 확인 요망
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long userId;
 
     @Column(nullable = false, unique = true)
+    private String email;
+
+    @Column(nullable = false)
     private String username;
 
     @Column(nullable = false)
     private String password;
 
     @Column(nullable = false)
-    private String email;
+    @Enumerated(value = EnumType.STRING)
+    private UserRoleEnum role;
 
-
-
-
-
+    public User(String email, String username, String password, UserRoleEnum role) {
+        this.email = email;
+        this.username = username;
+        this.password = password;
+        this.role = role;
+    }
 }

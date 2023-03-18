@@ -1,3 +1,4 @@
+
 package com.sparta.bambooforest.repository;
 
 import com.sparta.bambooforest.entity.Post;
@@ -12,4 +13,3 @@ public interface PostRepository extends JpaRepository<Post, Long > {
 
     Optional<Post> findByPostIdAndUser(Long postId, User user);
 }
-

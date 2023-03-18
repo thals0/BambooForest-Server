@@ -2,6 +2,7 @@ package com.sparta.bambooforest.service;
 
 import com.sparta.bambooforest.dto.PostRequestDto;
 import com.sparta.bambooforest.dto.PostResponseDto;
+
 import com.sparta.bambooforest.entity.Post;
 import com.sparta.bambooforest.entity.User;
 import com.sparta.bambooforest.repository.PostRepository;
@@ -10,8 +11,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+
 import java.util.ArrayList;
 import java.util.List;
+
 
 @Slf4j
 @Service
@@ -19,7 +22,6 @@ import java.util.List;
 public class PostService {
 
     private final PostRepository postRepository;
-
 
     @Transactional
     public PostResponseDto createPost(PostRequestDto postRequestDto, User user) {
