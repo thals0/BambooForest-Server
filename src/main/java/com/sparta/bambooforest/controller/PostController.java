@@ -2,6 +2,7 @@ package com.sparta.bambooforest.controller;
 
 import com.sparta.bambooforest.dto.PostRequestDto;
 import com.sparta.bambooforest.dto.PostResponseDto;
+import com.sparta.bambooforest.security.UserDetailsImpl;
 import com.sparta.bambooforest.service.PostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -30,18 +31,18 @@ public class PostController {
     }
 
     @GetMapping("/post/{id}")
-    public PostResponseDto getPost(@PathVariable Long postId){
-        return postService.getPost(postId);
+    public PostResponseDto getPost(@PathVariable Long id, @AuthenticationPrincipal UserDetailsImpl userDetails){
+        return postService.getPost(id, userDetails.getUser());
     }
 
     @PutMapping("/post/{id}")
-    public PostResponseDto updatePost(@PathVariable Long postId, @RequestBody PostRequestDto postRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails){
-        return postService.updatePost(postId, postRequestDto, userDetails.getUser());
+    public PostResponseDto updatePost(@PathVariable Long id, @RequestBody PostRequestDto postRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails){
+        return postService.updatePost(id, postRequestDto, userDetails.getUser());
     }
 
     @DeleteMapping("/post/{id}")
-    public ResponseEntity<String> deletePost(@PathVariable Long postId, @AuthenticationPrincipal UserDetailsImpl userDetails){
-        postService.deletePost(postId, userDetails.getUser());
+    public ResponseEntity<String> deletePost(@PathVariable Long id, @AuthenticationPrincipal UserDetailsImpl userDetails){
+        postService.deletePost(id, userDetails.getUser());
         return ResponseEntity.status(HttpStatus.OK).body("게시글 삭제 성공");
     }
 
