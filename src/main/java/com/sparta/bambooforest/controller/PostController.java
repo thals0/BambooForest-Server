@@ -4,19 +4,47 @@ import com.sparta.bambooforest.dto.PostRequestDto;
 import com.sparta.bambooforest.dto.PostResponseDto;
 import com.sparta.bambooforest.service.PostService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
+@RequestMapping("/api")
 public class PostController {
 
     private final PostService postService;
 
-    public PostResponseDto savePost(@RequestBody PostRequestDto postRequestDto, HttpServletRequest httpServletRequest){
-        return  postService.savePost(postRequestDto,httpServletRequest);
+    @PostMapping("/post")
+    public PostResponseDto createPost(@RequestBody PostRequestDto boardRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails){
+        return postService.createPost(boardRequestDto, userDetails.getUser());
     }
+
+    @GetMapping("/posts")
+    public List<PostResponseDto> getPosts(){
+        return postService.getAllPosts();
+    }
+
+    @GetMapping("/post/{id}")
+    public PostResponseDto getPost(@PathVariable Long postId){
+        return postService.getPost(postId);
+    }
+
+    @PutMapping("/post/{id}")
+    public PostResponseDto updatePost(@PathVariable Long postId, @RequestBody PostRequestDto postRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails){
+        return postService.updatePost(postId, postRequestDto, userDetails.getUser());
+    }
+
+    @DeleteMapping("/post/{id}")
+    public ResponseEntity<String> deletePost(@PathVariable Long postId, @AuthenticationPrincipal UserDetailsImpl userDetails){
+        postService.deletePost(postId, userDetails.getUser());
+        return ResponseEntity.status(HttpStatus.OK).body("게시글 삭제 성공");
+    }
+
+
 
 }

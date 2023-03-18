@@ -9,6 +9,7 @@ import javax.persistence.*;
 @Entity(name = "users")
 @NoArgsConstructor
 public class User extends TimeStamped{
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userId;
