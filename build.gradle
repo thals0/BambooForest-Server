@@ -36,10 +36,16 @@ dependencies {
     runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-jackson', version: '0.11.2'
 
     implementation 'org.springframework.boot:spring-boot-starter-validation'
-    implementation group: 'mysql', name: 'mysql-connector-java', version: '8.0.31'
 
     // 스프링 시큐리티
     implementation 'org.springframework.boot:spring-boot-starter-security'
+
+    // mysql
+    implementation 'mysql:mysql-connector-java'
+    implementation group: 'mysql', name: 'mysql-connector-java', version: '8.0.31'
+
+    // aplication.properties 암호화
+    implementation group: 'com.github.ulisesbocchio', name: 'jasypt-spring-boot-starter', version: '3.0.3'
 }
 
 tasks.named('test') {
