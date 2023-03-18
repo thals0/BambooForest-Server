@@ -1,6 +1,10 @@
 package com.sparta.bambooforest.controller;
 
 
+import com.sparta.bambooforest.dto.LoginRequestDto;
+import com.sparta.bambooforest.dto.SignupRequestDto;
+import com.sparta.bambooforest.entity.User;
+import com.sparta.bambooforest.jwt.JwtUtil;
 import com.sparta.bambooforest.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -27,7 +31,7 @@ public class UserController {
     // 회원 가입
     @ResponseBody
     @PostMapping("/signup")
-    public ResponseEntity<String> signup(@Valid @RequestBody final SignupRequestDto signupRequestDto, BindingResult result){
+    public ResponseEntity<String> signup(@Valid @RequestBody final SignupRequestDto signupRequestDto){
         userService.signup(signupRequestDto);
         return ResponseEntity.status(HttpStatus.CREATED).body("회원가입 성공");
     }
