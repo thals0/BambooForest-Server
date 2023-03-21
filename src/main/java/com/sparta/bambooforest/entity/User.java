@@ -7,11 +7,10 @@ import javax.persistence.*;
 
 @Getter
 @Entity(name = "users")
-@NoArgsConstructor
+@NoArgsConstructor // 파라미터가 없는 기본 생성자를 생성
 public class User extends TimeStamped{
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id // 데이터베이스 테이블의 기본 키(PK)와 객체의 필드를 매핑
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // 기본 키를 자동 생성
     private Long userId;
 
     @Column(nullable = false, unique = true)

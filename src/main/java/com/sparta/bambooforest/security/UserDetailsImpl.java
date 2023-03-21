@@ -9,6 +9,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.ArrayList;
 import java.util.Collection;
 
+// Authentication을 담고있는 UserDetails 인터페이스를 상속
+// SecurityContextHolder에 담을 Authentication 객체를 만들 때 사용
 public class UserDetailsImpl implements UserDetails {
 
     private final User user;
@@ -23,11 +25,13 @@ public class UserDetailsImpl implements UserDetails {
         return user;
     }
 
+    // 사용자의 권한 정보 가져옴
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         UserRoleEnum role = user.getRole();
         String authority = role.getAuthority();
 
+        // 권한 정보를 문자열 형태로 표현
         SimpleGrantedAuthority simpleGrantedAuthority = new SimpleGrantedAuthority(authority);
         Collection<GrantedAuthority> authorities = new ArrayList<>();
         authorities.add(simpleGrantedAuthority);

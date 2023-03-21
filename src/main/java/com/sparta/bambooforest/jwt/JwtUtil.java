@@ -20,7 +20,7 @@ import java.util.Base64;
 import java.util.Date;
 
 @Slf4j
-@Component
+@Component // Bean Configuration 파일에 Bean을 따로 등록하지 않아도 사용
 @RequiredArgsConstructor
 public class JwtUtil {
 
@@ -34,8 +34,11 @@ public class JwtUtil {
     @Value("${jwt.secret.key}")
     private String secretKey;
     private Key key;
+    // signature 생성 알고리즘 /토큰을 인코딩하거나 유효성 검증을 할 때 사용하는 고유한 암호화 코드
+    // signature -> jwt가 변경되지 않았음을 검증하는 역할
     private final SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS256;
 
+    // key 객체 생성
     @PostConstruct
     public void init() {
         byte[] bytes = Base64.getDecoder().decode(secretKey);
@@ -84,12 +87,15 @@ public class JwtUtil {
 
     // 토큰에서 사용자 정보 가져오기
     public Claims getUserInfoFromToken(String token) {
+        // jwt 토큰을 파싱해서 그 안에 들어있는 클레임을 추출하는 코드
         return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody();
     }
 
     // 인증 객체 생성
+    // SecurityContextHolder에 담을 Authentication을 가져옴
     public Authentication createAuthentication(String email) {
         UserDetails userDetails = userDetailsService.loadUserByUsername(email);
+        // UsernamePasswordAuthenticationToken -> 인증된 사용자의 인증 정보를 나타내는 객체로, 인증된 사용자의 정보와 권한을 포함
         return new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
     }
 
