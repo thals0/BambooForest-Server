@@ -19,16 +19,19 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-@Configuration
-@RequiredArgsConstructor
-@EnableWebSecurity
+@Configuration // 빈으로 등록
+@RequiredArgsConstructor // final, @Nonnull 생성자 생성
+@EnableWebSecurity // 스프링 시큐리티 사용
 @EnableGlobalMethodSecurity(securedEnabled = true) // @Secured 어노테이션 활성화
 public class WebSecurityConfig {
     // jwtutil 의존성 주입
     private final JwtUtil jwtUtil;
 
     @Bean
+    // PasswordEncoder 인터페이스를 구현한 클래스
     public PasswordEncoder passwordEncoder() {
+        // BCrypt 해싱 함수(BCrypt hashing function)를 사용해서 비밀번호를 인코딩해주는 메서드와
+        // 사용자의 의해 제출된 비밀번호와 저장소에 저장되어 있는 비밀번호의 일치 여부를 확인해주는 메서드를 제공
         return new BCryptPasswordEncoder();
     }
 
@@ -37,11 +40,13 @@ public class WebSecurityConfig {
         // h2-console 사용 및 resources 접근 허용 설정
         return (web) -> web.ignoring()
 //                .requestMatchers(PathRequest.toH2Console())
+                // 일반적인 정적 리소소 요청들을 모두 무시 ex) "/", "/favicon.ico"
                 .requestMatchers(PathRequest.toStaticResources().atCommonLocations());
     }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        // csrf 공격 방지
         http.csrf().disable();
 
         // 기본 설정인 Session 방식은 사용하지 않고 JWT 방식을 사용하기 위한 설정
@@ -49,10 +54,13 @@ public class WebSecurityConfig {
 
         http.authorizeRequests().antMatchers("/api/auth/**").permitAll()
                 .antMatchers("/api").permitAll()
+                // TODO : 1차 필터는 통과 시키고 내부에서 에러 처리
+                .antMatchers("/api/posts").permitAll()
                 .anyRequest().authenticated()
                 // JWT 인증/인가를 사용하기 위한 설정
                 .and().addFilterBefore(new JwtAuthFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class);
 
+        // cors 속성 정의하기 위해 HttpSecurity의 cors() 메소드로 설정
         http.cors();
 
         // 인증되지 않은 사용자가 인증되어야 하는 페이지에 접근하면 로그인 페이지로 리다이렉트되도록 설정
@@ -62,6 +70,7 @@ public class WebSecurityConfig {
     }
 
     @Bean
+    // cors 속성 정의
     public CorsConfigurationSource corsConfigurationSource(){
 
         CorsConfiguration config = new CorsConfiguration();

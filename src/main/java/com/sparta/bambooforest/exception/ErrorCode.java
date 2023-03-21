@@ -10,6 +10,9 @@ import static org.springframework.http.HttpStatus.*;
 @AllArgsConstructor
 public enum ErrorCode {
     /* 400 BAD_REQUEST : 잘못된 요청 */
+    INVALID_EMAIL(BAD_REQUEST, "올바른 이메일 주소를 입력해주세요."),
+    INVALID_USERNAME(BAD_REQUEST, "username은 알파벳 소문자(a~z), 숫자(0~9)로 구성되어야 합니다."),
+    INVALID_PASSWORD(BAD_REQUEST, "password는 알파벳 대소문자(a~z, A~Z), 숫자(0~9), 특수문자로만 구성되어야 합니다."),
     INVALID_TOKEN(BAD_REQUEST, "토큰이 유효하지 않습니다"),
     DUPLICATE_USER(BAD_REQUEST, "중복된 사용자가 존재합니다"),
     NOT_PROPER_PASSWORD(BAD_REQUEST, "비밀번호가 일치하지 않습니다."),

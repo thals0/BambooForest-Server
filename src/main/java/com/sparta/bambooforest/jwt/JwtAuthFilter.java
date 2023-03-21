@@ -40,7 +40,6 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         filterChain.doFilter(request,response);
     }
 
-
     // 인증 객체 생성 및 등록
     public void setAuthentication(String email) {
         SecurityContext context = SecurityContextHolder.createEmptyContext(); //SecurityContext context 안에 인증한 객체가 들어가게 됨

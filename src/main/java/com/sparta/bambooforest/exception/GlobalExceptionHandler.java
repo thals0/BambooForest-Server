@@ -11,21 +11,23 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 @Slf4j
 @RestControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
-    @ExceptionHandler(value = { IllegalArgumentException.class })
-    public ResponseEntity<Object> handleApiRequestException(IllegalArgumentException ex) {
-        RestApiException restApiException = new RestApiException();
-        restApiException.setHttpStatus(HttpStatus.BAD_REQUEST);
-        restApiException.setErrorMessage(ex.getMessage());
-
-        return new ResponseEntity<>(
-                restApiException,
-                HttpStatus.BAD_REQUEST
-        );
-    }
+//    @ExceptionHandler(value = { IllegalArgumentException.class })
+//    public ResponseEntity<Object> handleApiRequestException(IllegalArgumentException ex) {
+//        RestApiException restApiException = new RestApiException();
+//        restApiException.setHttpStatus(HttpStatus.BAD_REQUEST);
+//        restApiException.setErrorMessage(ex.getMessage());
+//
+//        return new ResponseEntity<>(
+//                restApiException,
+//                HttpStatus.BAD_REQUEST
+//        );
+//    }
 
     // 커스텀 한 예외처리
-    @ExceptionHandler(value = { CustomException.class })
+    @ExceptionHandler(value = { RuntimeException.class })
     public ResponseEntity<Object>  CustomhandleApiRequestException(CustomException ex) {
+        log.info(ex.getErrorCode().getDetail());
+
         // ExceptionDto는 화면에 보여줄 내용을 정의
         return ResponseEntity.status(ex.getErrorCode().getHttpStatus()).body(new CustomExceptionDto(ex));
     }
