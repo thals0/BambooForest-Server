@@ -1,9 +1,8 @@
 package com.sparta.bambooforest.dto;
 
+
 import com.sparta.bambooforest.entity.Post;
 import lombok.Getter;
-
-import javax.xml.stream.events.Comment;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,16 +20,28 @@ public class PostResponseDto {
 //    private Long viewCount;
 //    private Long likeCount;
 //    private Long commentCount;
-//    private List<Comment> commentList = new ArrayList<>();
+    private List<CommentResponseDto> commentList; // = new ArrayList<>();
 
     public PostResponseDto() {}
 
     public PostResponseDto(Post post) {
-        this.id = post.getPostId();
+        this.id= post.getId();
         this.title = post.getTitle();
         this.content = post.getContent();
         this.type = post.getType();
         this.modifiedAt = post.getModifiedAt();
         this.createdAt = post.getCreatedAt();
     }
+
+    public PostResponseDto(Post post, List<CommentResponseDto> commentResponseDtoList) {
+        this.id = post.getId();
+        this.title = post.getTitle();
+        this.content = post.getContent();
+        this.type = post.getType();
+        this.modifiedAt = post.getModifiedAt();
+        this.createdAt = post.getCreatedAt();
+        this.commentList = commentResponseDtoList;
+    }
+
+
 }

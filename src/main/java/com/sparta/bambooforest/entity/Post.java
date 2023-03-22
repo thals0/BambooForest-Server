@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Entity
@@ -12,8 +14,8 @@ import javax.persistence.*;
 public class Post extends TimeStamped{
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long postId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY) //자동으로 생성되게함. 전략이 identity(mysql),sequence(oracle)
+    private Long id;
 
     @Column(nullable = false)
     private String title;
@@ -23,7 +25,11 @@ public class Post extends TimeStamped{
     private String type;
 
     @ManyToOne
+    @JoinColumn(name = "user_id",nullable = false)
     private User user;
+
+    @OneToMany(mappedBy = "post")
+    private List<Comment> commentList = new ArrayList<>();
 
 
     public Post(PostRequestDto postRequestDto, User user) {

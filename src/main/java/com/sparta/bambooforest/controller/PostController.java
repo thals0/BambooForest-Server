@@ -5,6 +5,7 @@ import com.sparta.bambooforest.dto.PostResponseDto;
 import com.sparta.bambooforest.security.UserDetailsImpl;
 import com.sparta.bambooforest.service.PostService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
+@Slf4j
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/api")
@@ -32,7 +34,7 @@ public class PostController {
 
     @GetMapping("/post/{id}")
     public PostResponseDto getPost(@PathVariable Long id, @AuthenticationPrincipal UserDetailsImpl userDetails){
-        return postService.getPost(id, userDetails.getUser());
+        return (PostResponseDto) postService.getPost(id,userDetails.getUser());
     }
 
     @PutMapping("/post/{id}")

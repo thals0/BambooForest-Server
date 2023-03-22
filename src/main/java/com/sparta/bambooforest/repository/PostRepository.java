@@ -9,7 +9,8 @@ import java.util.List;
 import java.util.Optional;
 
 public interface PostRepository extends JpaRepository<Post, Long > {
-    List<Post> findAllByOrderByModifiedAtDesc();
 
-    Optional<Post> findByPostIdAndUser(Long postId, User user);
+    List<Post> findAllByOrderByCreatedAtDesc();
+
+    Optional<Post> findByIdAndUser(Long id, User user);
 }
