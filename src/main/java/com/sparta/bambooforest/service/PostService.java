@@ -1,8 +1,10 @@
 package com.sparta.bambooforest.service;
 
+import com.sparta.bambooforest.dto.CommentResponseDto;
 import com.sparta.bambooforest.dto.PostRequestDto;
 import com.sparta.bambooforest.dto.PostResponseDto;
 
+import com.sparta.bambooforest.entity.Comment;
 import com.sparta.bambooforest.entity.Post;
 import com.sparta.bambooforest.entity.User;
 import com.sparta.bambooforest.entity.UserRoleEnum;
@@ -34,21 +36,43 @@ public class PostService {
 
     }
 
+//    public List<PostResponseDto> getAllPosts(User user) {
+//        List<Post> postList = postRepository.findAll();
+//        List<PostResponseDto> postResponseDtoList =new ArrayList<>();
+//        for(Post post: postList){
+//            PostResponseDto postResponseDto = new PostResponseDto(post);
+//            postResponseDtoList.add(postResponseDto);
+//        }
+//        return postResponseDtoList;
+//    }
+
+
+        @Transactional(readOnly = true)
     public List<PostResponseDto> getAllPosts() {
-        List<Post> postList = postRepository.findAllByOrderByModifiedAtDesc();
-        List<PostResponseDto> postResponseDtoList =new ArrayList<>();
+        List<Post> postList = postRepository.findAll();
+        List<PostResponseDto> postResponseDtoList = new ArrayList<>();
+
         for(Post post: postList){
-            PostResponseDto postResponseDto = new PostResponseDto(post);
-            postResponseDtoList.add(postResponseDto);
+            List<CommentResponseDto> commentResponseList = getCommentResponseList(post);
+            postResponseDtoList.add(new PostResponseDto(post,commentResponseList));
         }
         return postResponseDtoList;
     }
 
+//기존 코드
     @Transactional
     public PostResponseDto getPost(Long id, User user) {
         Post post = isExistBoard(id);
         checkPostRole(id, user);
-        return new PostResponseDto(post);
+        return new PostResponseDto(post,getCommentResponseList(post));
+    }
+
+    public List<CommentResponseDto> getCommentResponseList(Post post){
+        List<CommentResponseDto> commentResponseList = new ArrayList<>();
+        for(Comment comment : post.getCommentList()){
+            commentResponseList.add(new CommentResponseDto(comment));
+        }
+        return commentResponseList;
     }
 
     @Transactional
@@ -67,8 +91,8 @@ public class PostService {
 
     private void checkPostRole(Long id, User user) {
         if (user.getRole() == UserRoleEnum.ADMIN) return; //유저에서 롤 가져오기
-        postRepository.findByPostIdAndUser(id, user).orElseThrow(
-                () -> new CustomException(ErrorCode.USER_NOT_FOUND) //global exception으로 처리
+        postRepository.findByIdAndUser(id, user).orElseThrow(
+                () -> new CustomException(ErrorCode.NOT_AUTHOR) //global exception으로 처리
         );
     }
 
