@@ -21,8 +21,8 @@ public class Post extends TimeStamped{
     private String title;
     @Column(nullable = false)
     private String content;
-    @Column(nullable = false)
-    private String type;
+//    @Column(nullable = false)
+//    private String type;
 
     @ManyToOne
     @JoinColumn(name = "user_id",nullable = false)
