@@ -12,7 +12,7 @@ public class PostResponseDto {
     private Long id;
     private String title;
     private String content;
-    private String type;
+//    private String type;
     private LocalDateTime modifiedAt;
     private LocalDateTime createdAt;
 
@@ -28,7 +28,7 @@ public class PostResponseDto {
         this.id= post.getId();
         this.title = post.getTitle();
         this.content = post.getContent();
-        this.type = post.getType();
+//        this.type = post.getType();
         this.modifiedAt = post.getModifiedAt();
         this.createdAt = post.getCreatedAt();
     }
@@ -37,7 +37,7 @@ public class PostResponseDto {
         this.id = post.getId();
         this.title = post.getTitle();
         this.content = post.getContent();
-        this.type = post.getType();
+//        this.type = post.getType();
         this.modifiedAt = post.getModifiedAt();
         this.createdAt = post.getCreatedAt();
         this.commentList = commentResponseDtoList;
